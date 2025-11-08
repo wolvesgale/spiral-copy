@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# eggs.email studio site
 
-## Getting Started
+Marketing site for eggs.email inspired by Spiral Capital's structured presentation while using original content, typography, and spacing choices tailored to the studio.
 
-First, run the development server:
+## Tech stack
+
+- [Next.js 16 App Router](https://nextjs.org/docs/app) with TypeScript
+- Tailwind CSS (v4) for utility-first styling
+- Contentlayer + MDX to manage News and Article entries
+- `next-seo` for default SEO meta tags
+- `framer-motion` for light interaction details
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The `dev` script runs Contentlayer in watch mode and starts Next.js on [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Adding MDX content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Content lives under the `content/` directory:
 
-## Learn More
+- `content/news/*.mdx` — frontmatter requires `title`, `date`, `summary`, and `tags`
+- `content/articles/*.mdx` — frontmatter requires `title`, `date`, and `summary`
 
-To learn more about Next.js, take a look at the following resources:
+After adding or editing files run:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npx contentlayer build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This regenerates the `.contentlayer/` cache used by the application.
 
-## Deploy on Vercel
+## Adding imagery
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The repository intentionally excludes binary assets. When working on visuals:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Save images locally under `public/` without committing them to Git.
+2. Update components to reference those local paths or remote URLs as needed.
+3. Before running `git push`, double-check `git status` and ensure no binary files are staged.
+4. Optionally use `git update-index --skip-worktree` or `.git/info/exclude` for long-lived local assets.
+
+This workflow keeps the upstream repository free of binaries while allowing CodeX teams to manage imagery locally.
+
+## Running a production build
+
+```bash
+npm run build
+npm start
+```
+
+`npm run build` runs Contentlayer followed by `next build`. Use `npm start` to launch the production server locally.
+
+## Deploying to Vercel
+
+1. Push the repository to your Git provider.
+2. Create a new project on [Vercel](https://vercel.com/) and import the repo.
+3. Set the build command to `npm run build` and output directory to `.next`.
+4. Add any necessary environment variables (none are required for the mock APIs).
+5. Deploy — Vercel will install dependencies, build with Contentlayer, and serve the production build.
+
+## Mock APIs
+
+- `GET /api/github-stars` — Edge runtime handler fetching the public star count for `vercel/next.js`.
+- `POST /api/contact` — Accepts JSON payloads and returns a success response (email sending is mocked).
