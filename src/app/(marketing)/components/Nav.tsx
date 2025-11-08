@@ -6,12 +6,13 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/about", label: "About" },
-  { href: "/business", label: "Business" },
-  { href: "/team", label: "Team" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/news", label: "News" },
-  { href: "/contact", label: "Contact" },
+  { href: "/about", label: "私たちについて" },
+  { href: "/business", label: "事業" },
+  { href: "/team", label: "チーム" },
+  { href: "/portfolio", label: "実績" },
+  { href: "/news", label: "ニュース" },
+  { href: "/booking", label: "予約" },
+  { href: "/contact", label: "お問い合わせ" },
 ];
 
 export function Nav() {
